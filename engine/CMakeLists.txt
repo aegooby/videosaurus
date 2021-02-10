@@ -27,6 +27,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" SUFFIX ".node")
 include_directories(${CMAKE_JS_INC})
 target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB})
 
+### ZeroMQ ###
+find_package(cppzmq CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE cppzmq cppzmq-static)
+
 ### N-API ###
 execute_process(
     COMMAND node -p "require('node-addon-api').include"

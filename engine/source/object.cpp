@@ -1,31 +1,34 @@
 
 #include "object.hpp"
-using namespace std;
-int example::add(int x, int y)
+
+namespace example
+{
+int add(int x, int y)
 {
     return (x + y);
 }
-Napi::Number example::addWrapped(const Napi::CallbackInfo& info)
+node::Number __add(const node::CallbackInfo& info)
 {
-    Napi::Env env = info.Env();
+    node::Env env = info.Env();
     // check if arguments are integer only.
     if (info.Length() < 2 || !info[0].IsNumber() || !info[1].IsNumber())
     {
-        Napi::TypeError::New(env, "arg1::Number, arg2::Number expected")
+        node::TypeError::New(env, "arg1::Number, arg2::Number expected")
             .ThrowAsJavaScriptException();
     }
     // convert javascripts datatype to c++
-    Napi::Number first  = info[0].As<Napi::Number>();
-    Napi::Number second = info[1].As<Napi::Number>();
+    node::Number first  = info[0].As<node::Number>();
+    node::Number second = info[1].As<node::Number>();
     // run c++ function return value and return it in javascript
-    Napi::Number returnValue = Napi::Number::New(
-        env, example::add(first.Int32Value(), second.Int32Value()));
+    node::Number returnValue =
+        node::Number::New(env, add(first.Int32Value(), second.Int32Value()));
 
     return returnValue;
 }
-Napi::Object example::Init(Napi::Env env, Napi::Object exports)
+node::Object init(node::Env env, node::Object exports)
 {
     // export Napi function
-    exports.Set("add", Napi::Function::New(env, example::addWrapped));
+    exports.Set("add", node::Function::New(env, __add));
     return exports;
 }
+} // namespace example

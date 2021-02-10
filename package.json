@@ -5,6 +5,7 @@
     "description": "",
     "main": ".webpack/main",
     "scripts": {
+        "setup": "[ ! -d ~/vcpkg ] && git clone https://github.com/microsoft/vcpkg ~/vcpkg && ~/vcpkg/bootstrap-vcpkg.sh",
         "clean": "rm -rf .webpack && yarn --cwd engine clean",
         "build": "yarn --cwd engine build",
         "start": "electron-forge start",

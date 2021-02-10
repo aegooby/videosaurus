@@ -249,12 +249,18 @@ X_VCPKG_APPLOCAL_DEPS_INSTALL:BOOL=
 // serialization.
 X_VCPKG_APPLOCAL_DEPS_SERIALIZED:BOOL=OFF
 
+//The directory containing a CMake configuration file for ZeroMQ.
+ZeroMQ_DIR:PATH=/Users/ziad/vcpkg/installed/x64-osx/share/zeromq
+
 //Path to a program.
 _VCPKG_CL:FILEPATH=_VCPKG_CL-NOTFOUND
 
 //The directory which contains the installed libraries for each
 // triplet
 _VCPKG_INSTALLED_DIR:PATH=/Users/ziad/vcpkg/installed
+
+//The directory containing a CMake configuration file for cppzmq.
+cppzmq_DIR:PATH=/Users/ziad/vcpkg/installed/x64-osx/share/cppzmq
 
 //Value Computed by CMake
 videosaurus_BINARY_DIR:STATIC=/Users/ziad/GitHub/videosaurus/engine/build

@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "utility": "cpp",
+        "__debug": "cpp",
+        "ios": "cpp"
+    }
+}

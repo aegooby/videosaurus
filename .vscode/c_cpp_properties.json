@@ -4,6 +4,7 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
+                "${workspaceFolder}/engine/node_modules/**/*",
                 "${vcpkgRoot}/x64-osx/include"
             ],
             "defines": [],
