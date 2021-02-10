@@ -134,11 +134,11 @@ CMakeCache.txt
 CMakeFiles/
 
 # Build
-# build/
-# xcode/
-# .vs/
-# .cache/
-# compile_commands.json
+build/
+xcode/
+.vs/
+.cache/
+compile_commands.json
 
 # MacOS
 .DS_Store
