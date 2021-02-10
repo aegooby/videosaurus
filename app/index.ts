@@ -2,11 +2,9 @@
 import * as electron from "electron";
 import * as path from "path";
 
-import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
+declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
-declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
-
-if (require("electron-squirrel-startup")) // eslint-disable-line global-require
+if (require("electron-squirrel-startup"))
     electron.app.quit();
 
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
@@ -16,17 +14,23 @@ const icon_image = electron.nativeImage.createFromPath(icon_path);
 icon_image.isMacTemplateImage = true;
 electron.app.dock.setIcon(icon_image);
 
-async function ready() {
-    try {
-        await installExtension(REACT_DEVELOPER_TOOLS);
+const react_devtools = path.join(__dirname, "../../extensions/react-devtools");
+
+async function ready()
+{
+    try
+    {
         create_window();
+        await electron.session.defaultSession.loadExtension(react_devtools);
     }
-    catch (error) {
+    catch (error)
+    {
         console.log(error);
     }
 }
 
-function create_window() {
+function create_window()
+{
     const window_preferences =
     {
         width: 800,
@@ -35,7 +39,7 @@ function create_window() {
         minWidth: 800,
         frame: false,
         titleBarStyle: "hiddenInset" as const,
-        webContents: { contextIsolation: false },
+        webContents: { contextIsolation: true },
         icon: icon_image,
     };
 
@@ -45,13 +49,15 @@ function create_window() {
 
 electron.app.on("ready", ready);
 
-function window_all_closed(): void {
+function window_all_closed(): void
+{
     if (process.platform !== "darwin")
         electron.app.quit();
 }
 electron.app.on("window-all-closed", window_all_closed);
 
-function activate(): void {
+function activate(): void
+{
     if (electron.BrowserWindow.getAllWindows().length === 0)
         create_window();
 }
