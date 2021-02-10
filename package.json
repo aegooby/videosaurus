@@ -2,9 +2,11 @@
     "name": "videosaurus",
     "productName": "videosaurus",
     "version": "1.0.0",
-    "description": "My Electron application description",
+    "description": "",
     "main": ".webpack/main",
     "scripts": {
+        "clean": "rm -rf .webpack && yarn --cwd engine clean",
+        "build": "yarn --cwd engine build",
         "start": "electron-forge start",
         "package": "electron-forge package",
         "make": "electron-forge make",
@@ -90,6 +92,7 @@
     },
     "dependencies": {
         "electron-squirrel-startup": "^1.0.0",
+        "node-addon-api": "^3.1.0",
         "react": "^17.0.1",
         "react-dom": "^17.0.1"
     }

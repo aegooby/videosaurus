@@ -1,0 +1,23 @@
+{
+    "name": "videosaurus",
+    "productName": "videosaurus",
+    "version": "1.0.0",
+    "description": "",
+    "main": "",
+    "scripts": {
+        "clean": "rm -rf build/",
+        "build": "cmake-js compile"
+    },
+    "keywords": [],
+    "author": {
+        "name": "aegooby",
+        "email": "aegooby@gmail.com"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "node-addon-api": "^3.0.0"
+    },
+    "devDependencies": {
+        "cmake-js": "^6.1.0"
+    }
+}

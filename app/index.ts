@@ -2,6 +2,11 @@
 import * as electron from "electron";
 import * as path from "path";
 
+/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+/* @ts-ignore */
+import * as native from "../engine/build/Release/videosaurus.node";
+
+
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
 if (require("electron-squirrel-startup"))
@@ -20,13 +25,11 @@ async function ready()
 {
     try
     {
+        console.log(native.add(5, 10));
         create_window();
         await electron.session.defaultSession.loadExtension(react_devtools);
     }
-    catch (error)
-    {
-        console.log(error);
-    }
+    catch (error) { console.log(error); }
 }
 
 function create_window()

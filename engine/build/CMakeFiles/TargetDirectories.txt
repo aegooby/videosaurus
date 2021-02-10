@@ -1,0 +1,3 @@
+/Users/ziad/GitHub/videosaurus/engine/build/CMakeFiles/rebuild_cache.dir
+/Users/ziad/GitHub/videosaurus/engine/build/CMakeFiles/edit_cache.dir
+/Users/ziad/GitHub/videosaurus/engine/build/CMakeFiles/videosaurus.dir
