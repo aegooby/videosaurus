@@ -45,8 +45,6 @@ async function unzip_devtools(): Promise<void>
 
 async function ready(): Promise<void>
 {
-    /** @todo Temp. */
-    console.log(native.add(5, 10));
     try { await fs.promises.access(react_devtools_dir); }
     catch (error) { await unzip_devtools(); }
     try
@@ -55,6 +53,10 @@ async function ready(): Promise<void>
         await electron.session.defaultSession.loadExtension(react_devtools_dir);
     }
     catch (error) { console.log(error); }
+
+    /** @todo Temp. */
+    const master = new native.master(10);
+    console.log(master.value());
 }
 
 function create_window(): void

@@ -4,6 +4,9 @@
     "version": "1.0.0",
     "description": "",
     "main": "",
+    "engines": {
+        "node": ">= 14.0.0"
+    },
     "scripts": {
         "clean": "rm -rf build/",
         "build": "cmake-js compile"

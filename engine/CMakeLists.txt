@@ -31,13 +31,12 @@ target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB})
 find_package(cppzmq CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE cppzmq cppzmq-static)
 
+### OpenCV ###
+# find_package(OpenCV CONFIG REQUIRED)
+# target_link_libraries(${PROJECT_NAME} PRIVATE opencv_ml opencv_dnn opencv_core opencv_flann)
+
 ### N-API ###
-execute_process(
-    COMMAND node -p "require('node-addon-api').include"
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE NODE_ADDON_API_DIR
-)
-string(REPLACE "\n" "" NODE_ADDON_API_DIR ${NODE_ADDON_API_DIR})
-string(REPLACE "\"" "" NODE_ADDON_API_DIR ${NODE_ADDON_API_DIR})
+execute_process(COMMAND node -p "require('node-addon-api').include" WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} OUTPUT_VARIABLE NODE_ADDON_API_DIR)
+string(REGEX REPLACE "[\r\n\"]" "" NODE_ADDON_API_DIR ${NODE_ADDON_API_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${NODE_ADDON_API_DIR})
-add_definitions(-DNAPI_VERSION=3)
+add_definitions(-DNAPI_VERSION=6)
