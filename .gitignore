@@ -92,6 +92,9 @@ out/
 yarn.lock
 package-lock.json
 
+# Extensions
+react-devtools/
+
 # Prerequisites
 *.d
 
@@ -139,7 +142,6 @@ xcode/
 .vs/
 .cache/
 compile_commands.json
-# react-devtools/
 
 # MacOS
 .DS_Store
