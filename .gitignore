@@ -139,6 +139,7 @@ xcode/
 .vs/
 .cache/
 compile_commands.json
+# react-devtools/
 
 # MacOS
 .DS_Store
