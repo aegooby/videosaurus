@@ -4,6 +4,10 @@ import * as path from "path";
 import * as fs from "fs";
 import * as jszip from "jszip";
 
+/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+/* @ts-ignore */
+import * as native from "../engine/build/Release/videosaurus.node";
+
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
 if (require("electron-squirrel-startup"))
@@ -41,6 +45,8 @@ async function unzip_devtools(): Promise<void>
 
 async function ready(): Promise<void>
 {
+    /** @todo Temp. */
+    console.log(native.add(5, 10));
     try { await fs.promises.access(react_devtools_dir); }
     catch (error) { await unzip_devtools(); }
     try
