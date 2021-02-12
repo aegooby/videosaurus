@@ -1,7 +1,9 @@
 
 #pragma once
-#include "node-interface.hpp"
+#include "nodejs-interface.hpp"
 
+namespace nodejs
+{
 class master : public napi::ObjectWrap<master>
 {
 public:
@@ -10,8 +12,10 @@ public:
 
 private:
     napi::Value value(const napi::CallbackInfo&);
+    napi::Value sleep(const napi::CallbackInfo&);
     napi::Value plus_one(const napi::CallbackInfo&);
     napi::Value multiply(const napi::CallbackInfo&);
 
     double __value;
 };
+} // namespace nodejs

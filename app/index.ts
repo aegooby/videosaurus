@@ -61,10 +61,10 @@ function create_window(): void
 {
     const window_preferences =
     {
-        width: 800,
-        height: 600,
-        minHeight: 600,
-        minWidth: 800,
+        width: 1366,
+        height: 768,
+        minWidth: 1024,
+        minHeight: 576,
         frame: false,
         titleBarStyle: "hiddenInset" as const,
         webPreferences:
@@ -96,9 +96,10 @@ function activate(): void
 }
 Electron.app.on("activate", activate);
 
-function button(): void
+async function button(): Promise<void>
 {
     const master = new native.master(10);
-    console.log("Click! (" + master.value() + ")");
+    console.log("Click!");
+    console.log(await master.sleep());
 }
 Electron.ipcMain.on("button", button);
