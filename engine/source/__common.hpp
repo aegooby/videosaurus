@@ -1,5 +1,3 @@
 
 #pragma once
-#include <napi.h>
-
-namespace napi = Napi;
+#include "__common/__common.hpp"

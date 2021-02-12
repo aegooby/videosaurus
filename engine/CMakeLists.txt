@@ -13,13 +13,13 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ### Flags ###
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og -fsanitize=address")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DVS_DEBUG -Og")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a -Wall -Wextra")
 
 ### Source files ###
-file(GLOB HEADERS ${CMAKE_SOURCE_DIR}/source/*.hpp)
-file(GLOB SOURCES ${CMAKE_SOURCE_DIR}/source/*.cpp)
+file(GLOB_RECURSE HEADERS ${CMAKE_SOURCE_DIR}/source/*.hpp)
+file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/source/*.cpp)
 
 add_library(${PROJECT_NAME} SHARED ${HEADERS} ${SOURCES} ${CMAKE_JS_SRC})
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" SUFFIX ".node")

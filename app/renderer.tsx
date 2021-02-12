@@ -2,15 +2,25 @@
 import * as ReactHotLoader from "react-hot-loader";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+
 import "./index.css";
 
-const hotLoader = ReactHotLoader.hot(module);
+const hot_loader = ReactHotLoader.hot(module);
 
-class Text extends React.Component
+class Button extends React.Component
 {
-    render()
+    constructor(props: unknown)
     {
-        return (<h1 className="main-text">P'enises in my A'nuses</h1>);
+        super(props);
+        this.onClick = this.onClick.bind(this);
+    }
+    onClick(): void
+    {
+        window.Electron.ipcRenderer.send("button");
+    }
+    render(): JSX.Element
+    {
+        return (<button onClick={this.onClick}>run</button>);
     }
 }
 
@@ -18,10 +28,10 @@ class Main extends React.Component
 {
     render()
     {
-        return (<div><Text /></div>);
+        return (<div><Button /></div>);
     }
 }
 
-export default hotLoader(Main);
+export default hot_loader(Main);
 
 ReactDOM.render(<Main />, document.querySelector("#root"));

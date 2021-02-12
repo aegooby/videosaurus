@@ -1,8 +1,6 @@
 
 #pragma once
-#include "__common.hpp"
-
-#include <napi.h>
+#include "node-interface.hpp"
 
 class master : public napi::ObjectWrap<master>
 {

@@ -1,6 +1,9 @@
 
 #include "master.hpp"
 
+#include <chrono>
+#include <thread>
+
 napi::Object master::init(napi::Env env, napi::Object exports)
 {
     napi::Function func =
@@ -35,6 +38,11 @@ master::master(const napi::CallbackInfo& info) : napi::ObjectWrap<master>(info)
 
 napi::Value master::value(const napi::CallbackInfo& info)
 {
+    /** @todo Async doesn't work. */
+    const auto __sleep = []() -> void
+    { std::this_thread::sleep_for(std::chrono::seconds(10)); };
+    auto thread = std::thread(__sleep);
+    thread.detach();
     double num = this->__value;
 
     return napi::Number::New(info.Env(), num);

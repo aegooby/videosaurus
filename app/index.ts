@@ -1,24 +1,26 @@
 
-import * as electron from "electron";
+import * as Electron from "electron";
+
 import * as path from "path";
 import * as fs from "fs";
 import * as jszip from "jszip";
 
 /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
 /* @ts-ignore */
-import * as native from "../engine/build/Release/videosaurus.node";
+import * as native from "../engine/build/Debug/videosaurus.node";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
+declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 if (require("electron-squirrel-startup"))
-    electron.app.quit();
+    Electron.app.quit();
 
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 
 const icon_path = path.join(__dirname, "icon.png");
-const icon_image = electron.nativeImage.createFromPath(icon_path);
+const icon_image = Electron.nativeImage.createFromPath(icon_path);
 icon_image.isMacTemplateImage = true;
-electron.app.dock.setIcon(icon_image);
+Electron.app.dock.setIcon(icon_image);
 
 const extensions_dir = path.join(__dirname, "../../extensions");
 const react_devtools_zip = path.join(extensions_dir, "react-devtools.zip");
@@ -50,13 +52,9 @@ async function ready(): Promise<void>
     try
     {
         create_window();
-        await electron.session.defaultSession.loadExtension(react_devtools_dir);
+        await Electron.session.defaultSession.loadExtension(react_devtools_dir);
     }
     catch (error) { console.log(error); }
-
-    /** @todo Temp. */
-    const master = new native.master(10);
-    console.log(master.value());
 }
 
 function create_window(): void
@@ -69,26 +67,38 @@ function create_window(): void
         minWidth: 800,
         frame: false,
         titleBarStyle: "hiddenInset" as const,
-        webContents: { contextIsolation: true },
+        webPreferences:
+        {
+            contextIsolation: true,
+            nodeIntegration: false,
+            preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY
+        },
         icon: icon_image,
     };
 
-    const main_window = new electron.BrowserWindow(window_preferences);
+    const main_window = new Electron.BrowserWindow(window_preferences);
     main_window.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 }
 
-electron.app.on("ready", ready);
+Electron.app.on("ready", ready);
 
 function window_all_closed(): void
 {
     if (process.platform !== "darwin")
-        electron.app.quit();
+        Electron.app.quit();
 }
-electron.app.on("window-all-closed", window_all_closed);
+Electron.app.on("window-all-closed", window_all_closed);
 
 function activate(): void
 {
-    if (electron.BrowserWindow.getAllWindows().length === 0)
+    if (Electron.BrowserWindow.getAllWindows().length === 0)
         create_window();
 }
-electron.app.on("activate", activate);
+Electron.app.on("activate", activate);
+
+function button(): void
+{
+    const master = new native.master(10);
+    console.log("Click! (" + master.value() + ")");
+}
+Electron.ipcMain.on("button", button);
