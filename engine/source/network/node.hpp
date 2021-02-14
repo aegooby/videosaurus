@@ -17,7 +17,8 @@ public:
     zmq::socket_t socket;
 
 public:
-    node(class context&, zmq::socket_type);
+    node(class context&);
+    void create(zmq::socket_type);
 };
 } // namespace network
 } // namespace vs

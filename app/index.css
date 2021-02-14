@@ -21,6 +21,21 @@ body
     align-items: center;
 }
 
+.monospace
+{
+    font-family: "Menlo", Courier, monospace !important;
+}
+
+.hidden
+{
+    display: none;
+}
+
+*:focus
+{
+    outline: none !important;
+}
+
 .title-bar
 {
     -webkit-app-region: drag !important;
@@ -31,16 +46,40 @@ body
     position: fixed;
     top: 0;
     
-    min-width: 100%;
-    min-height: 2.4em;
+    width: 100%;
+    height: 38px;
 
     background-color: #202020;
 
     z-index: 1;
 }
-.hidden
+
+.form-options
 {
-    display: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.messages
+{
+    display: flex;
+    flex-direction: column;
+
+    font-family: sans-serif;
+    font-size: 1.5em;
+    font-weight: normal;
+    color: #ffffff;
+    text-align: justify;
+    vertical-align: top;
+
+    background-color: #606060;
+    border-radius: 8px;
+
+    width: 15em;
+    height: 5em;
+    padding: 1em;
 }
 
 form
@@ -61,7 +100,7 @@ input[type=text]
 
     font-family: sans-serif;
     font-size: 1.5em;
-    font-weight: bold;
+    font-weight: normal;
     color: #ffffff;
     text-align: center;
 
@@ -69,8 +108,8 @@ input[type=text]
     border: 2px solid;
     border-color: #ffffff;
     border-radius: 5px;
-    min-width: 5em;
-    min-height: 2em;
+    width: 10em;
+    height: 2em;
 }
 
 input[type=submit], button
@@ -88,14 +127,15 @@ input[type=submit], button
     border: 2px solid;
     border-color: #ffffff;
     border-radius: 5px;
-    min-width: 5em;
-    min-height: 2em;
+    width: 5em;
+    height: 2em;
     
     text-align: center;
     vertical-align: middle;
 
     transition: 0.2s ease-in-out;
 }
+
 input[type=submit]:hover, button:hover
 {
     color: black;
@@ -107,6 +147,7 @@ input[type=submit]:hover, button:hover
 
     transition: 0.2s ease-in-out;
 }
+
 input[type=submit]:active, button:active
 {
     background-color: #a0a0a0;
@@ -115,9 +156,4 @@ input[type=submit]:active, button:active
     border-radius: 5px;
 
     transition: 0.1s ease-in-out;
-}
-
-*:focus
-{
-    outline: none !important;
 }

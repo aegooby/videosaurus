@@ -101,9 +101,9 @@ public:
 };
 
 template<typename result_type, typename... types>
-napi::Promise async(const napi::CallbackInfo&            info,
-                    std::function<result_type(types...)> function,
-                    types&&... args)
+napi::Promise promise(const napi::CallbackInfo&            info,
+                      std::function<result_type(types...)> function,
+                      types&&... args)
 {
     auto* __worker = new worker<result_type>(info.Env());
     __worker->bind(function, std::forward<types>(args)...);
@@ -113,4 +113,4 @@ napi::Promise async(const napi::CallbackInfo&            info,
 }
 } // namespace async
 } // namespace nodejs
-}
+} // namespace vs

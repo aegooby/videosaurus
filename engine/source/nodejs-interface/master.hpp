@@ -16,6 +16,7 @@ public:
 
 private:
     napi::Value sleep(const napi::CallbackInfo&);
+    napi::Value start(const napi::CallbackInfo&);
 
     network::context context;
     network::node    node;
