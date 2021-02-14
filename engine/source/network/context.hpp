@@ -5,7 +5,9 @@
 
 namespace vs
 {
-class network
+namespace network
+{
+class context
 {
 public:
     static constexpr int io_threads = 1;
@@ -13,4 +15,5 @@ public:
 
 public:
 };
+} // namespace network
 } // namespace vs

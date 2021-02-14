@@ -1,20 +1,23 @@
 
 #pragma once
 #include "../__common.hpp"
+#include "context.hpp"
 #include "zeromq.hpp"
 
 namespace vs
 {
-class newtork;
+namespace network
+{
 class node
 {
 private:
-    class network& network;
+    class context& context;
 
 public:
     zmq::socket_t socket;
 
 public:
-    node(class network&);
+    node(class context&, zmq::socket_type);
 };
+} // namespace network
 } // namespace vs

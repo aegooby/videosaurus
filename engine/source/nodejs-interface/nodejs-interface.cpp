@@ -3,6 +3,8 @@
 
 #include "master.hpp"
 
+namespace vs
+{
 namespace nodejs
 {
 nodejs::napi::Object __init__(nodejs::napi::Env    env,
@@ -13,3 +15,4 @@ nodejs::napi::Object __init__(nodejs::napi::Env    env,
 
 NODE_API_MODULE(NODE_GYP_MODULE_NAME, __init__)
 } // namespace nodejs
+}

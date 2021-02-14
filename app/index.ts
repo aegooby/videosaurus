@@ -7,7 +7,7 @@ import * as jszip from "jszip";
 
 /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
 /* @ts-ignore */
-import * as native from "../engine/build/Debug/libvs.node";
+import * as libvs from "../engine/build/Debug/libvs.node";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -83,7 +83,7 @@ async function ready(): Promise<void>
     catch (error) { console.log(error); }
 }
 
-function create_window(): void
+function create_window(): Electron.BrowserWindow
 {
     const window_preferences =
     {
@@ -104,6 +104,14 @@ function create_window(): void
 
     const main_window = new Electron.BrowserWindow(window_preferences);
     main_window.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+    function full_screen(): void
+    {
+        main_window.webContents.send("full-screen");
+    }
+    main_window.on("enter-full-screen", full_screen);
+    main_window.on("leave-full-screen", full_screen);
+
+    return main_window;
 }
 
 Electron.app.on("ready", ready);
@@ -122,10 +130,8 @@ function activate(): void
 }
 Electron.app.on("activate", activate);
 
-async function button(): Promise<void>
+function message_form(event: Electron.IpcMainEvent, message: string): void
 {
-    const master = new native.master(10);
-    console.log("Click!");
-    console.log(await master.sleep());
+    console.log(message);
 }
-Electron.ipcMain.on("button", button);
+Electron.ipcMain.on("message-form", message_form);

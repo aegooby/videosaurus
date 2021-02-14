@@ -1,7 +1,11 @@
 
 #pragma once
+#include "../__common.hpp"
+#include "../network.hpp"
 #include "nodejs-interface.hpp"
 
+namespace vs
+{
 namespace nodejs
 {
 class master : public napi::ObjectWrap<master>
@@ -11,11 +15,10 @@ public:
     master(const napi::CallbackInfo& info);
 
 private:
-    napi::Value value(const napi::CallbackInfo&);
     napi::Value sleep(const napi::CallbackInfo&);
-    napi::Value plus_one(const napi::CallbackInfo&);
-    napi::Value multiply(const napi::CallbackInfo&);
 
-    double __value;
+    network::context context;
+    network::node    node;
 };
 } // namespace nodejs
+} // namespace vs

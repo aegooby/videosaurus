@@ -7,6 +7,8 @@
 #include <iostream>
 #include <utility>
 
+namespace vs
+{
 namespace nodejs
 {
 namespace async
@@ -111,3 +113,4 @@ napi::Promise async(const napi::CallbackInfo&            info,
 }
 } // namespace async
 } // namespace nodejs
+}
