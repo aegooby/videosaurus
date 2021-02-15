@@ -12,7 +12,8 @@ namespace nodejs
 {
 napi::Object master::init(napi::Env env, napi::Object exports)
 {
-    auto functions = { InstanceMethod("start", &master::start) };
+    auto functions = { InstanceMethod("sleep", &master::sleep),
+                       InstanceMethod("start", &master::start) };
 
     auto __class = DefineClass(env, "master", functions);
 
@@ -34,33 +35,31 @@ napi::Value master::start(const napi::CallbackInfo& info)
         throw std::runtime_error("master::master(): wrong socket flag type");
     if (!info[1].IsString())
         throw std::runtime_error("master::master(): wrong endpoint type");
-    bool        flag     = info[0].As<napi::Boolean>();
-    std::string endpoint = info[1].As<napi::String>();
+    const bool        host     = info[0].As<napi::Boolean>();
+    const std::string endpoint = info[1].As<napi::String>();
 
-    const auto __start = [this](bool& flag, const char* endpoint)
+    const auto function = [this](bool host, const std::string& endpoint)
     {
-        /* Host node */
-        if (flag)
+        if (host)
         {
             node.create(zmq::socket_type::rep);
-            node.socket.bind(endpoint);
+            node.socket.bind(endpoint.c_str());
         }
-        /* Client node */
         else
         {
             node.create(zmq::socket_type::req);
-            node.socket.connect(endpoint);
+            node.socket.connect(endpoint.c_str());
         }
     };
 
-    return async::promise(info, std::function(__start), flag, endpoint.c_str());
+    return async::promise(info, function, host, endpoint);
 }
 
 napi::Value master::sleep(const napi::CallbackInfo& info)
 {
-    const auto __sleep = []()
+    const auto function = []()
     { std::this_thread::sleep_for(std::chrono::seconds(5)); };
-    return async::promise(info, std::function(__sleep));
+    return async::promise(info, function);
 }
 } // namespace nodejs
 } // namespace vs

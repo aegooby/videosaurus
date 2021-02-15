@@ -62,13 +62,13 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace p201
+namespace vs
 {
-static constexpr const char* name    = "videosaurus";
-static constexpr const char* version = "1.0.0";
+static constexpr const char* __name__    = "videosaurus";
+static constexpr const char* __version__ = "1.0.0";
 #if defined(VS_DEBUG)
 static constexpr bool __debug__ = true;
 #else
 static constexpr bool __debug__ = false;
 #endif
-} // namespace p201
+} // namespace vs

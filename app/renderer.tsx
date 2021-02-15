@@ -22,9 +22,10 @@ class TitleBar extends React.Component<{ visible: boolean; }, unknown>
     }
 }
 
-class MessageForm extends React.Component<unknown, { message: string; history: string; }>
+class MessageForm extends React.Component<{ ip: string; },
+    { message: string; history: string; }>
 {
-    constructor(props: unknown)
+    constructor(props: { ip: string; })
     {
         super(props);
         this.state = { message: "", history: "" };
@@ -51,6 +52,8 @@ class MessageForm extends React.Component<unknown, { message: string; history: s
     {
         const element =
             <>
+                <div className="room-info">{"host: " + this.props.ip}</div>
+                <br />
                 <div className="messages">
                     {this.state.history}
                 </div>
@@ -69,7 +72,8 @@ class MessageForm extends React.Component<unknown, { message: string; history: s
 
 type ConnectionType = "none" | "host" | "client";
 
-class NetworkInterface extends React.Component<unknown, { address: string; connected: boolean; connectionType: ConnectionType; }>
+class NetworkInterface extends React.Component<unknown,
+    { address: string; connected: boolean; connectionType: ConnectionType; }>
 {
     constructor(props: unknown)
     {
@@ -82,6 +86,10 @@ class NetworkInterface extends React.Component<unknown, { address: string; conne
         this.onClientSubmit = this.onClientSubmit.bind(this);
         this.onHostButtonClick = this.onHostButtonClick.bind(this);
         this.onClientButtonClick = this.onClientButtonClick.bind(this);
+        this.onCreateNode = this.onCreateNode.bind(this);
+
+        window.Electron.ipcRenderer.removeAllListeners("create-node");
+        window.Electron.ipcRenderer.on("create-node", this.onCreateNode);
     }
     onAddressChange(event: React.ChangeEvent<HTMLInputElement>): void
     {
@@ -89,12 +97,20 @@ class NetworkInterface extends React.Component<unknown, { address: string; conne
     }
     onHostSubmit(event: React.FormEvent<HTMLFormElement>): void
     {
-        this.setState({ address: "", connected: true });
+        window.Electron.ipcRenderer.send("create-node", true, "0.0.0.0");
+        this.setState({ connected: true });
         event.preventDefault();
     }
     onClientSubmit(event: React.FormEvent<HTMLFormElement>): void
     {
-        this.setState({ address: "", connected: true });
+        const address = this.state.address.trim();
+        if (address === "")
+        {
+            event.preventDefault();
+            return;
+        }
+        window.Electron.ipcRenderer.send("create-node", false, address);
+        this.setState({ connected: true });
         event.preventDefault();
     }
     onHostButtonClick(): void
@@ -105,9 +121,12 @@ class NetworkInterface extends React.Component<unknown, { address: string; conne
     {
         this.setState({ connectionType: "client" });
     }
+    onCreateNode(_: unknown, address: string): void
+    {
+        this.setState({ address: address });
+    }
     render(): React.ReactElement
     {
-        console.log(this.state.connectionType);
         let subElement: React.ReactElement;
         switch (this.state.connectionType)
         {
@@ -126,11 +145,6 @@ class NetworkInterface extends React.Component<unknown, { address: string; conne
             case "host":
                 subElement =
                     <form onSubmit={this.onHostSubmit}>
-                        <input
-                            type="text" className="monospace"
-                            value={this.state.address}
-                            onChange={this.onAddressChange} />
-                        <br />
                         <input type="submit" value="create" />
                     </form>;
                 break;
@@ -141,14 +155,14 @@ class NetworkInterface extends React.Component<unknown, { address: string; conne
                             type="text" className="monospace"
                             value={this.state.address}
                             onChange={this.onAddressChange}
-                            placeholder="ip:port" />
+                            placeholder="IP address" />
                         <br />
                         <input type="submit" value="join" />
                     </form>;
                 break;
         }
         if (this.state.connected)
-            subElement = <MessageForm />;
+            subElement = <MessageForm ip={this.state.address} />;
         const element = <div className="form-options">{subElement}</div>;
         return element;
     }

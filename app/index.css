@@ -28,7 +28,7 @@ body
 
 .hidden
 {
-    display: none;
+    display: none !important;
 }
 
 *:focus
@@ -60,6 +60,25 @@ body
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.room-info
+{
+    display: flex;
+    flex-direction: column;
+
+    font-family: "Menlo", Courier, monospace !important;
+    font-size: 1.5em;
+    font-weight: normal;
+    color: #ffffff;
+    text-align: center;
+    vertical-align: top;
+
+    background-color: #404040;
+    border-radius: 8px;
+
+    width: 15em;
+    padding: 1em;
 }
 
 .messages
@@ -108,8 +127,11 @@ input[type=text]
     border: 2px solid;
     border-color: #ffffff;
     border-radius: 5px;
-    width: 10em;
+    
+    width: 15em;
     height: 2em;
+    padding-left: 1em;
+    padding-right: 1em;
 }
 
 input[type=submit], button

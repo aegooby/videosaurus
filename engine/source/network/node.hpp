@@ -4,6 +4,8 @@
 #include "context.hpp"
 #include "zeromq.hpp"
 
+#include <string>
+
 namespace vs
 {
 namespace network
@@ -18,7 +20,9 @@ public:
 
 public:
     node(class context&);
+
     void create(zmq::socket_type);
+    void destroy();
 };
 } // namespace network
 } // namespace vs

@@ -1,19 +1,22 @@
 
 import * as Electron from "electron";
 
-import * as path from "path";
-import * as fs from "fs";
-import * as jszip from "jszip";
-
-/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
-/* @ts-ignore */
-import * as libvs from "../engine/build/Debug/libvs.node";
-
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 /** @todo Minor security issue. */
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
+
+import * as path from "path";
+import * as fs from "fs";
+import * as jszip from "jszip";
+import * as ipGlobal from "public-ip";
+
+/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+/* @ts-ignore */
+import * as libvs from "../engine/build/Debug/libvs.node";
+
+const libvsMaster = new libvs.master();
 
 function squirrel(): void
 {
@@ -129,7 +132,18 @@ function activate(): void
 }
 Electron.app.on("activate", activate);
 
-function sendMessage(event: Electron.IpcMainEvent, message: string): void
+async function createNode(event: Electron.IpcMainEvent, host: boolean, endpoint: string): Promise<void>
+{
+    try 
+    {
+        event.reply("create-node", host ? await ipGlobal.v4() : endpoint);
+        await libvsMaster.start(host, "tcp://" + endpoint + ":50000");
+    }
+    catch (error) { console.log(error); }
+}
+Electron.ipcMain.on("create-node", createNode);
+
+function sendMessage(_: unknown, message: string): void
 {
     console.log(message);
 }
