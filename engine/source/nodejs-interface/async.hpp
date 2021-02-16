@@ -92,7 +92,7 @@ public:
 
 namespace debug
 {
-static constexpr const char* header = "@native-async";
+static constexpr const char* header = "@libvs-async";
 } // namespace debug
 
 template<typename function_type, typename... types>

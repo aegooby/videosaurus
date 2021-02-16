@@ -137,14 +137,19 @@ async function createNode(event: Electron.IpcMainEvent, host: boolean, endpoint:
     try 
     {
         event.reply("create-node", host ? await ipGlobal.v4() : endpoint);
-        await libvsMaster.start(host, "tcp://" + endpoint + ":50000");
+        await libvsMaster.createNode(host, "tcp://" + endpoint + ":50000");
     }
     catch (error) { console.log(error); }
 }
 Electron.ipcMain.on("create-node", createNode);
 
-function sendMessage(_: unknown, message: string): void
+async function sendMessage(_: unknown, host: boolean, message: string): Promise<void>
 {
-    console.log(message);
+    try
+    {
+        if (host) console.log(await libvsMaster.receiveMessage());
+        await libvsMaster.sendMessage(message);
+    }
+    catch (error) { console.log(error); }
 }
 Electron.ipcMain.on("send-message", sendMessage);

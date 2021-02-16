@@ -15,8 +15,9 @@ public:
     master(const napi::CallbackInfo& info);
 
 private:
-    napi::Value sleep(const napi::CallbackInfo&);
-    napi::Value start(const napi::CallbackInfo&);
+    napi::Value create_node(const napi::CallbackInfo&);
+    napi::Value send_message(const napi::CallbackInfo&);
+    napi::Value receive_message(const napi::CallbackInfo&);
 
     network::context context;
     network::node    node;

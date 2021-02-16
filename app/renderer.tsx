@@ -5,8 +5,6 @@ import * as ReactDOM from "react-dom";
 
 import "./index.css";
 
-const hotLoader = ReactHotLoader.hot(module);
-
 class TitleBar extends React.Component<{ visible: boolean; }, unknown>
 {
     constructor(props: { visible: boolean; })
@@ -21,11 +19,12 @@ class TitleBar extends React.Component<{ visible: boolean; }, unknown>
             return <div className="title-bar hidden"></div>;
     }
 }
-
-class MessageForm extends React.Component<{ ip: string; },
+type ConnectionType = "none" | "host" | "client";
+class MessageForm
+    extends React.Component<{ ip: string; connectionType: ConnectionType; },
     { message: string; history: string; }>
 {
-    constructor(props: { ip: string; })
+    constructor(props: { ip: string; connectionType: ConnectionType; })
     {
         super(props);
         this.state = { message: "", history: "" };
@@ -44,7 +43,8 @@ class MessageForm extends React.Component<{ ip: string; },
             event.preventDefault();
             return;
         }
-        window.Electron.ipcRenderer.send("send-message", this.state.message);
+        const host = (this.props.connectionType != "host") ? false : true;
+        window.Electron.ipcRenderer.send("send-message", host, this.state.message);
         this.setState({ message: "", history: this.state.history + "\r\n" + this.state.message });
         event.preventDefault();
     }
@@ -69,9 +69,6 @@ class MessageForm extends React.Component<{ ip: string; },
         return element;
     }
 }
-
-type ConnectionType = "none" | "host" | "client";
-
 class NetworkInterface extends React.Component<unknown,
     { address: string; connected: boolean; connectionType: ConnectionType; }>
 {
@@ -97,7 +94,7 @@ class NetworkInterface extends React.Component<unknown,
     }
     onHostSubmit(event: React.FormEvent<HTMLFormElement>): void
     {
-        window.Electron.ipcRenderer.send("create-node", true, "0.0.0.0");
+        window.Electron.ipcRenderer.send("create-node", true, "*");
         this.setState({ connected: true });
         event.preventDefault();
     }
@@ -109,7 +106,10 @@ class NetworkInterface extends React.Component<unknown,
             event.preventDefault();
             return;
         }
-        window.Electron.ipcRenderer.send("create-node", false, address);
+        if (address === "localhost")
+            window.Electron.ipcRenderer.send("create-node", false, "127.0.0.1");
+        else
+            window.Electron.ipcRenderer.send("create-node", false, address);
         this.setState({ connected: true });
         event.preventDefault();
     }
@@ -162,7 +162,9 @@ class NetworkInterface extends React.Component<unknown,
                 break;
         }
         if (this.state.connected)
-            subElement = <MessageForm ip={this.state.address} />;
+            subElement = <MessageForm
+                ip={this.state.address}
+                connectionType={this.state.connectionType} />;
         const element = <div className="form-options">{subElement}</div>;
         return element;
     }
@@ -196,5 +198,7 @@ class Main extends React.Component<unknown, { fullScreen: boolean; }>
     }
 }
 
+const hotLoader = ReactHotLoader.hot(module);
 export default hotLoader(Main);
+
 ReactDOM.render(<Main />, document.querySelector("#root"));
