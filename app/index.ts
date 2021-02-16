@@ -148,7 +148,7 @@ async function sendMessage(_: unknown, host: boolean, message: string): Promise<
     try
     {
         if (host) console.log(await libvsMaster.receiveMessage());
-        await libvsMaster.sendMessage(message);
+        console.log(await libvsMaster.sendMessage(message));
     }
     catch (error) { console.log(error); }
 }
