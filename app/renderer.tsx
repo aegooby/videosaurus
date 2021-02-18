@@ -5,20 +5,8 @@ import * as ReactDOM from "react-dom";
 
 import "./index.css";
 
-class TitleBar extends React.Component<{ visible: boolean; }, unknown>
-{
-    constructor(props: { visible: boolean; })
-    {
-        super(props);
-    }
-    render(): React.ReactElement
-    {
-        if (this.props.visible)
-            return <div className="title-bar"></div>;
-        else
-            return <div className="title-bar hidden"></div>;
-    }
-}
+import { TitleBar } from "./components/TitleBar";
+
 type ConnectionType = "none" | "host" | "client";
 class MessageForm
     extends React.Component<{ ip: string; connectionType: ConnectionType; },
