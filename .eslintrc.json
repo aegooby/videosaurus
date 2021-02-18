@@ -11,5 +11,10 @@
         "plugin:import/errors",
         "plugin:import/warnings"
     ],
-    "parser": "@typescript-eslint/parser"
+    "parser": "@typescript-eslint/parser",
+    "settings": {
+        "import/resolver": {
+            "typescript": {}
+        }
+    }
 }
