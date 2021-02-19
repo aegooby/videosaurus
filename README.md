@@ -1,4 +1,4 @@
-# videosaurus &middot;
+# videosaurus &middot; [![build](https://github.com/aegooby/videosaurus/actions/workflows/node.yml/badge.svg)](https://github.com/aegooby/videosaurus/actions/workflows/node.yml)
 A saurus for sauruses.
 ## Initial configuration
 ### MacOS
