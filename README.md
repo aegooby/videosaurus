@@ -1,4 +1,4 @@
-# videosaurus
+# videosaurus &middot;
 A saurus for sauruses.
 ## Initial configuration
 ### MacOS
