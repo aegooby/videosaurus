@@ -5,7 +5,8 @@
     "description": "",
     "main": ".webpack/main",
     "scripts": {
-        "setup": "([ ! -d ~/vcpkg ] && git clone https://github.com/microsoft/vcpkg ~/vcpkg && ~/vcpkg/bootstrap-vcpkg.sh); (yarn install && yarn --cwd engine install && ~/vcpkg/vcpkg install $(cat engine/dependencies.vcpkg))",
+        "setup": "([ ! -d ~/vcpkg ] && git clone https://github.com/microsoft/vcpkg ~/vcpkg && ~/vcpkg/bootstrap-vcpkg.sh)",
+        "install": "yarn --cwd engine install && (~/vcpkg/vcpkg install $(cat engine/dependencies.vcpkg))",
         "clean": "rm -rf .webpack && rm -rf extensions/react-devtools/ && yarn --cwd engine clean",
         "build": "yarn --cwd engine build",
         "start": "electron-forge start",
