@@ -95,10 +95,38 @@ namespace debug
 static constexpr const char* header = "@libvs-async";
 } // namespace debug
 
+template<typename... conditions>
+struct type_and : std::true_type
+{ };
+template<typename condition, typename... conditions>
+struct type_and<condition, conditions...>
+    : std::conditional_t<condition::value, type_and<conditions...>,
+                         std::false_type>
+{ };
+
+template<typename... conditions>
+struct type_or : std::false_type
+{ };
+template<typename condition, typename... conditions>
+struct type_or<condition, conditions...>
+    : std::conditional_t<condition::value, std::true_type,
+                         type_or<conditions...>>
+{ };
+
+template<typename... types>
+using has_reference = type_or<std::is_reference<types>...>;
+template<typename... types>
+inline constexpr bool has_reference_v = has_reference<types...>::value;
+
 template<typename function_type, typename... types>
 napi::Promise promise(const napi::CallbackInfo& info,
-                      const function_type&      function, types&&... args)
+                      const function_type&      function, types... args)
 {
+    /** @note Since the lambda is called asynchronously, any references     */
+    /**       passed in at the time of creation may be destroyed before     */
+    /**       the execution point of the lambda.                            */
+    static_assert(!has_reference_v<types...>);
+
     if constexpr (__debug__)
     {
         std::cout << termcolor::bold << debug::header << termcolor::reset
